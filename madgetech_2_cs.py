@@ -22,7 +22,23 @@ class CorrosionSensorProcessor():
             self.ANALYSIS_INPUT = (None,None,None,None,None)
     
     def runAnalysis(self,data , secondinterval , resistance , wetnessThreshold , m , A , CIalarm):
-        try:
+        """
+		This Function takes madgetech data as processed by the madgetech_2 module as well as 
+		certain corrosion sensor parameters and returns a tuple of lists containing datasets
+		for:
+		days = daycount as a float
+		wetString = Time wet as a contiguous string
+		wetPeaks = Time Wet listed as peaks
+		wetTime = A float of the time in days wet
+		dryString = Time dry as a contiguous string
+		dryPeaks = Time dry listed as peaks
+		dryTime =  A float of the time in days dry
+		cycleCount = Number of wet-dry cycles
+		chlorideEquivalence = Calculated equivalent chloride level over time
+		incrementalCorrosion = Corrosion index per unit time
+		cumulativeCorrosion = Total Corrosion index up to time
+		"""
+	try:
             from math import log10
             dayInterval = (secondinterval/float(3600*24))
             wetString = [None]*len(data)

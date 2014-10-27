@@ -1,5 +1,5 @@
 import madgetech_2 as mt2
-import csv
+import csv,os
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
@@ -95,5 +95,33 @@ class TOWprocessor():
             print "Analysis of TOW sensor failed, check inputs for proper formatting."
             return False
 
-    def blah(self,data):
-        pass
+    def plotRaw(self,site , data , days):
+        yy = [data]
+        titles = ['Raw Sensor Data']
+        yaxis = ['Voltage [mV]']
+                 
+        fig, axes = plt.subplots(nrows=1, ncols=1,figsize=(16,4),dpi = 100)
+        for i in range(len(yy)):
+            axes.tick_params(labelsize=14)
+            axes.set_title(titles[i],fontsize = 20)
+            axes.set_xlabel('Exposure Time [D]',fontsize = 16)
+            axes.set_ylabel(yaxis[i],fontsize = 16)
+            axes.set_xlim([0,days[-1]])
+            axes.plot(days,yy[i])
+            axes.yaxis.set_major_locator(MaxNLocator(5))
+
+        fig.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=1.4)
+        fig.suptitle(site+' TOW',fontsize = 16,horizontalalignment='right',
+                     verticalalignment='top',x = 1,y = 1)
+        fig.tight_layout()
+
+        #check for alternative sensors:
+        fname = site+' TOW Raw.png'
+        fname_counter = 2
+        while os.path.isfile(fname):
+            fname = site+' TOW'+str(fname_counter)+' Raw.png'
+            fname_counter += 1
+        
+        fig.savefig(fname)
+        fig.clf()
+        plt.close()

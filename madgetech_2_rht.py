@@ -1,6 +1,8 @@
 import madgetech_2 as mt2
 import csv,os
+import time
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.ticker import MaxNLocator
 
 class rhtProcessor():
@@ -41,15 +43,37 @@ class rhtProcessor():
         else:
             return zip(columns)
 
-    def cut_bounds(self, data , minmax):
-        min_,max_ = min(data),max(data)
-        while max_ > minmax[1] or min_ < minmax[0]:
-            print 'Data truncated at out of bounds'
-            mid = int(len(data)/2)
-            ind = data.index(max_ if max_ > minmax[1] else min_)
-            if ind > mid:
-                data = data[:ind]
-            else:
-                data = data[ind + 1:]
-            min_,max_ = min(data),max(data)
-        return data
+    def cut_bounds(self, data):
+        def tellme(s):
+            print s
+            plt.title(s,fontsize=16)
+            plt.draw()
+
+        plt.clf()
+        plt.plot(data)
+        plt.setp(plt.gca(),autoscale_on=False)
+        tellme('You will select start and end bounds. Click to continue')
+
+        plt.waitforbuttonpress()
+
+        happy = False
+        while not happy:
+            pts = []
+            while len(pts) < 2:
+                tellme('Select 2 bounding points with mouse')
+                pts = plt.ginput(2,timeout=-1)
+                if len(pts) < 2:
+                    tellme('Too few points, starting over')
+                    time.sleep(1) # Wait a second
+
+            plt.fill_between(x, y1, y2, alpha=0.5, facecolor='grey', interpolate=True) 
+            
+            tellme('Happy? Key click for yes, mouse click for no')
+
+            happy = plt.waitforbuttonpress()
+
+        bounds = sorted([int(i[0]) for i in pts])
+        plt.clf()
+        print bounds
+        return data[bounds[0] if bounds[0] > .02*len(data) else 0:bounds[1] if bounds[1] < len(data)-1 else len(data)-1],bounds
+
