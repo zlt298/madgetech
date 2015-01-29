@@ -158,7 +158,7 @@ class CorrosionSensorProcessor():
                         ['TOW','','CORROSIVITY','','CORROSION INDEX'],
                         ['Inputs','','Inputs','','Inputs'],
                         ['Wetness Threshold (recommended: 0.00005)',str(self.ANALYSIS_INPUT[1]),'Chloride Calibration Slope (m)',str(self.ANALYSIS_INPUT[2]),'Sensor R (Ohm)',str(self.ANALYSIS_INPUT[0])],
-                        ['Data Interval (min)',str(int((tt[1]-tt[0])*24*3600)),'Chloride Calibration Offset (A)',str(self.ANALYSIS_INPUT[3]),'Corrosion Index Alarm Threshold',str(self.ANALYSIS_INPUT[4])],
+                        ['Data Interval (min)',str(int((tt[1]-tt[0])*24*60)),'Chloride Calibration Offset (A)',str(self.ANALYSIS_INPUT[3]),'Corrosion Index Alarm Threshold',str(self.ANALYSIS_INPUT[4])],
                         [],[],['Outputs','','Outputs','','Outputs'],
                         ['','','','','Corrosion Index',str(cci[-1])],
                         ['Total Exposure Time (D)',str(tt[-1])],
@@ -166,7 +166,7 @@ class CorrosionSensorProcessor():
                         ['Total Wetness Time (D)',str(wetT),'Min',min(chl)],
                         ['','','Average',str(sum(chl)/float(len(chl)))],
                         ['Total Dry Time (D)',str(dryT),'Max',max(chl)],
-                        [],['Percent Time Wet (%)',str(wetT/float(tt[-1])),'SD',stdev(chl)],
+                        [],['Percent Time Wet (%)',str(wetT/float(tt[-1])*100),'SD',stdev(chl)],
                         [],['Number of Wet-Dry Cycles',str(cyc)]]
             
             if len(wetP) > 0:
